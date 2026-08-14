@@ -1,0 +1,291 @@
+/* Cavanagh Family theme for authentik
+   Designed for current authentik branding/custom CSS support (2026).
+   Prefer variables and exposed parts; direct selectors are intentionally limited.
+*/
+
+:root {
+  --cavanagh-red: #8f171b;
+  --cavanagh-oxblood: #4a0c10;
+  --cavanagh-gold: #c69a45;
+  --cavanagh-ivory: #f5efe3;
+  --cavanagh-charcoal: #151515;
+  --cavanagh-black: #0c0c0d;
+
+  --ak-global--primary--100: var(--cavanagh-red);
+  --ak-global--primary--200: #741216;
+  --ak-global--primary--300: var(--cavanagh-oxblood);
+  --ak-accent: var(--cavanagh-gold);
+
+  /* PatternFly fallbacks used by authentik */
+  --pf-global--primary-color--100: var(--cavanagh-red);
+  --pf-global--primary-color--200: #741216;
+  --pf-v5-global--primary-color--100: var(--cavanagh-red);
+  --pf-v5-global--primary-color--200: #741216;
+  --pf-global--link--Color: var(--cavanagh-red);
+  --pf-global--link--Color--hover: var(--cavanagh-oxblood);
+  --pf-v5-global--link--Color: var(--cavanagh-red);
+  --pf-v5-global--link--Color--hover: var(--cavanagh-oxblood);
+}
+
+html[data-theme="light"] {
+  --ak-global--BackgroundColor--100: var(--cavanagh-ivory);
+  --ak-global--Color--100: #231c18;
+  --pf-global--BackgroundColor--100: #fbf7ef;
+  --pf-global--BackgroundColor--200: var(--cavanagh-ivory);
+  --pf-v5-global--BackgroundColor--100: #fbf7ef;
+  --pf-v5-global--BackgroundColor--200: var(--cavanagh-ivory);
+}
+
+html[data-theme="dark"] {
+  --ak-global--BackgroundColor--100: var(--cavanagh-charcoal);
+  --ak-global--Color--100: #f6f0e5;
+  --pf-global--BackgroundColor--100: var(--cavanagh-charcoal);
+  --pf-global--BackgroundColor--200: var(--cavanagh-black);
+  --pf-v5-global--BackgroundColor--100: var(--cavanagh-charcoal);
+  --pf-v5-global--BackgroundColor--200: var(--cavanagh-black);
+  --pf-global--link--Color: #d9b66e;
+  --pf-global--link--Color--hover: #f0d79d;
+  --pf-v5-global--link--Color: #d9b66e;
+  --pf-v5-global--link--Color--hover: #f0d79d;
+}
+
+/* Flow wordmark: use authentik's exposed branding part first, with PatternFly
+   and branding-logo fallbacks for releases that render the element directly. */
+ak-flow-executor::part(branding) {
+  width: min(25rem, 100%);
+  max-width: none;
+  min-height: 2.75rem;
+  margin-block-end: .5rem;
+  transform: scale(1.32);
+  transform-origin: left center;
+}
+
+.pf-c-login__main-header.pf-c-brand,
+.pf-v5-c-login__main-header.pf-m-brand {
+  width: min(25rem, 100%);
+  max-width: none;
+  min-height: 2.75rem;
+  margin-block-end: .5rem;
+  transform: scale(1.32);
+  transform-origin: left center;
+}
+
+.pf-c-login__main-header .branding-logo,
+.pf-v5-c-login__main-header .branding-logo,
+img.branding-logo {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 25rem;
+  max-height: none;
+  object-fit: contain;
+  object-position: left center;
+}
+
+@media (max-width: 36rem) {
+  ak-flow-executor::part(branding),
+  .pf-c-login__main-header.pf-c-brand,
+  .pf-v5-c-login__main-header.pf-m-brand {
+    width: min(21rem, 100%);
+    min-height: 2.75rem;
+    margin-block-end: .65rem;
+    transform: scale(1.08);
+  }
+}
+
+/* Authentik 2026.5 enables its wide content layout at 70rem. The iPad mini
+   landscape viewport sits just above that breakpoint but is too narrow for
+   the content panel, gap and background to share one row. Keep only that
+   transition band in a centred, single-panel grid. Larger iPads retain the
+   approved split layout. */
+@media (min-width: 70rem) and (max-width: 73.5rem) and (min-height: 35rem) {
+  ak-flow-executor[data-layout^="content"] {
+    --ak-c-login__main--brand-PaddingIdeal: 2.5rem;
+    --ak-c-login__main--brand-PaddingMax: 3rem;
+    --ak-c-login__main--footer-PaddingIdeal: 2rem;
+    --ak-c-login__main--footer-PaddingMax: 2.5rem;
+    --ak-c-login__footer--PaddingBlock: .5rem;
+    display: grid !important;
+    flex-flow: unset;
+    place-content: stretch;
+    gap: 0;
+    min-height: 100dvh;
+    grid-template-columns: 1fr [main] minmax(0, 35rem) 1fr;
+    grid-template-rows:
+      [header] minmax(.5rem, 1fr)
+      [main] minmax(auto, min-content)
+      [footer] minmax(min-content, 1fr);
+    grid-template-areas:
+      "header header header"
+      ". main ."
+      "footer footer footer";
+  }
+
+  ak-flow-executor[data-layout^="content"]::part(main) {
+    grid-area: main;
+    width: min(35rem, calc(100dvw - 2rem));
+    justify-self: center;
+    align-self: center;
+  }
+
+  ak-flow-executor[data-layout^="content"]::part(footer) {
+    grid-area: footer;
+    justify-self: center;
+  }
+}
+
+/* Compact-height phones such as the 375x667 iPhone SE need the full flow to
+   remain reachable without clipping. These are authentik's own login spacing
+   variables, so form controls and tap targets retain their normal size. */
+@media (max-width: 36rem) and (max-height: 44rem) {
+  ak-flow-executor {
+    --ak-c-login__main--brand-PaddingMin: .25rem;
+    --ak-c-login__main--brand-PaddingIdeal: .35rem;
+    --ak-c-login__main--brand-PaddingMax: .5rem;
+    --ak-c-login__main-header-PaddingBlock: .35rem;
+    --ak-c-login__main--footer-PaddingMin: .25rem;
+    --ak-c-login__main--footer-PaddingIdeal: .35rem;
+    --ak-c-login__main--footer-PaddingMax: .5rem;
+    --ak-c-login__footer--PaddingBlock: .25rem;
+  }
+
+  ak-flow-executor::part(branding) {
+    min-height: 2.25rem;
+    margin-block-end: .25rem;
+    transform: scale(1);
+  }
+
+  ak-flow-executor::part(main) {
+    min-height: 0;
+  }
+}
+
+/* Primary action styling. PatternFly class names are intentionally broad and may
+   need review after major authentik UI upgrades. */
+.pf-c-button.pf-m-primary,
+.pf-v5-c-button.pf-m-primary,
+button[type="submit"] {
+  background: linear-gradient(180deg, #a81e24 0%, var(--cavanagh-red) 55%, #731116 100%);
+  border-color: #6f1115;
+  color: #fffaf1;
+  box-shadow: 0 0 0 1px rgba(198,154,69,.35), 0 .2rem .55rem rgba(0,0,0,.16);
+}
+
+.pf-c-button.pf-m-primary:hover,
+.pf-v5-c-button.pf-m-primary:hover,
+button[type="submit"]:hover {
+  background: #741216;
+}
+
+/* Passkey action. Authentik 2026.5 renders the passwordless action in the form
+   body and social sources in the card footer. The compact fallback below keeps
+   the link usable without a box. Current browsers additionally use CSS anchor
+   positioning to place it directly before the first social source. The
+   original localized label remains in the DOM for screen readers. */
+a.pf-c-button[data-ouia-component-id="passwordless"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  min-height: 2.75rem;
+  padding: 0;
+  margin-inline: auto;
+  font-size: 0;
+  line-height: 1;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+/* PatternFly draws secondary-button borders with ::after. */
+a.pf-c-button[data-ouia-component-id="passwordless"]::after {
+  display: none;
+}
+
+a.pf-c-button[data-ouia-component-id="passwordless"]::before {
+  content: "";
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  background: center / contain no-repeat
+    url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI4LjEuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiCgkgdmlld0JveD0iMCAwIDIxNiAyMTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDIxNiAyMTY7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4KCS5zdDB7ZmlsbDpub25lO30KCS5zdDF7ZmlsbC1ydWxlOmV2ZW5vZGQ7Y2xpcC1ydWxlOmV2ZW5vZGQ7ZmlsbDojMzUzNTM1O30KCS5zdDJ7ZmlsbC1ydWxlOmV2ZW5vZGQ7Y2xpcC1ydWxlOmV2ZW5vZGQ7fQoJLnN0M3tmaWxsOiMxNDEzMTM7fQo8L3N0eWxlPgo8ZyBpZD0iTGF5ZXJfMSI+CjwvZz4KPGcgaWQ9Iklzb2xhdGlvbl9Nb2RlIj4KCTxyZWN0IGNsYXNzPSJzdDAiIHdpZHRoPSIyMTYiIGhlaWdodD0iMjE2Ii8+Cgk8Zz4KCQk8Zz4KCQkJPHBhdGggY2xhc3M9InN0MSIgZD0iTTE3Mi4zMiw5Ni43OWMwLDEzLjc4LTguNDgsMjUuNS0yMC4yOSwyOS43OGw3LjE0LDExLjgzbC0xMC41NywxM2wxMC41NywxMi43MWwtMTcuMDQsMjIuODdsLTEyLjAxLTEyLjgyCgkJCQl2LTI1Ljl2LTIyLjU2Yy0xMC42OC00Ljg1LTE4LjE1LTE1Ljk3LTE4LjE1LTI4LjkxYzAtMTcuNCwxMy41MS0zMS41MSwzMC4xOC0zMS41MUMxNTguODEsNjUuMjgsMTcyLjMyLDc5LjM5LDE3Mi4zMiw5Ni43OXoKCQkJCSBNMTQyLjE0LDEwMS42MWM0LjAyLDAsNy4yOC0zLjQsNy4yOC03LjZjMC00LjItMy4yNi03LjYxLTcuMjgtNy42MXMtNy4yOCwzLjQtNy4yOCw3LjYxCgkJCQlDMTM0Ljg1LDk4LjIxLDEzOC4xMiwxMDEuNjEsMTQyLjE0LDEwMS42MXoiLz4KCQkJPHBhdGggY2xhc3M9InN0MiIgZD0iTTE3Mi40MSw5Ni44OGMwLDEzLjYyLTguMjUsMjUuMjMtMTkuODMsMjkuNjdsNi41OCwxMS44NGwtOS43MywxM2w5LjczLDEyLjcxbC0xNy4wMywyMy4wNXYtMjUuOXYtMzIuNzcKCQkJCXYtMjYuODdjNC4wMiwwLDcuMjgtMy40MSw3LjI4LTcuNmMwLTQuMi0zLjI2LTcuNjEtNy4yOC03LjYxVjY1LjI4QzE1OC44Niw2NS4yOCwxNzIuNDEsNzkuNDMsMTcyLjQxLDk2Ljg4eiIvPgoJCQk8cGF0aCBjbGFzcz0ic3QyIiBkPSJNMTIwLjI0LDEzMS40M2MtOS43NS04LTE2LjMtMjAuMy0xNy4yLTM0LjI3SDUwLjhjLTEwLjk2LDAtMTkuODQsOS4wMS0xOS44NCwyMC4xM3YyNS4xNwoJCQkJYzAsNS41Niw0LjQ0LDEwLjA3LDkuOTIsMTAuMDdoNjkuNDRjNS40OCwwLDkuOTItNC41MSw5LjkyLTEwLjA3VjEzMS40M3oiLz4KCQkJPHBhdGggY2xhc3M9InN0MyIgZD0iTTczLjE2LDkxLjEzYy0yLjQyLTAuNDYtNC44Mi0wLjg5LTcuMTEtMS44NkM1Ny40LDg1LjY0LDUyLjM2LDc4Ljk1LDUwLjczLDY5LjUKCQkJCWMtMS4xMi02LjQ3LTAuNTktMTIuODcsMi4wMy0xOC45MmMzLjcyLTguNiwxMC4zOS0xMy4yNiwxOS4xNS0xNC44NGM1LjI0LTAuOTQsMTAuNDYtMC43MywxNS41LDEuMTUKCQkJCWM3LjU5LDIuODIsMTIuNjgsOC4yNiwxNS4wMywxNi4yNGMyLjM4LDguMDUsMi4wMywxNi4xLTEuNTYsMjMuNzJjLTMuNzIsNy45Ni0xMC4yMSwxMi4yMy0xOC40MiwxMy45CgkJCQljLTAuNjgsMC4xNC0xLjM3LDAuMjctMi4wNSwwLjQxQzc4LDkxLjEzLDc1LjU4LDkxLjEzLDczLjE2LDkxLjEzeiIvPgoJCTwvZz4KCTwvZz4KPC9nPgo8L3N2Zz4K");
+}
+
+:host([theme="dark"]) a.pf-c-button[data-ouia-component-id="passwordless"]::before,
+html[data-theme="dark"] a.pf-c-button[data-ouia-component-id="passwordless"]::before {
+  background-image:
+    url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI4LjEuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiCgkgdmlld0JveD0iMCAwIDIxNiAyMTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDIxNiAyMTY7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4KCS5zdDB7ZmlsbDpub25lO30KCS5zdDF7ZmlsbC1ydWxlOmV2ZW5vZGQ7Y2xpcC1ydWxlOmV2ZW5vZGQ7ZmlsbDojRTdBQzIyO30KCS5zdDJ7ZmlsbC1ydWxlOmV2ZW5vZGQ7Y2xpcC1ydWxlOmV2ZW5vZGQ7ZmlsbDojQ0Y5MTJBO30KCS5zdDN7ZmlsbC1ydWxlOmV2ZW5vZGQ7Y2xpcC1ydWxlOmV2ZW5vZGQ7ZmlsbDojRkZGRkZGO30KCS5zdDR7ZmlsbDojRkZGRkZGO30KPC9zdHlsZT4KPGcgaWQ9IkxheWVyXzEiPgo8L2c+CjxnIGlkPSJJc29sYXRpb25fTW9kZSI+Cgk8cmVjdCBjbGFzcz0ic3QwIiB3aWR0aD0iMjE2IiBoZWlnaHQ9IjIxNiIvPgoJPGc+CgkJPGc+CgkJCTxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0xNzIuMzIsOTYuNzljMCwxMy43OC04LjQ4LDI1LjUtMjAuMjksMjkuNzhsNy4xNCwxMS44M2wtMTAuNTcsMTNsMTAuNTcsMTIuNzFsLTE3LjA0LDIyLjg3bC0xMi4wMS0xMi44MgoJCQkJdi0yNS45di0yMi41NmMtMTAuNjgtNC44NS0xOC4xNS0xNS45Ny0xOC4xNS0yOC45MWMwLTE3LjQsMTMuNTEtMzEuNTEsMzAuMTgtMzEuNTFDMTU4LjgxLDY1LjI4LDE3Mi4zMiw3OS4zOSwxNzIuMzIsOTYuNzl6CgkJCQkgTTE0Mi4xNCwxMDEuNjFjNC4wMiwwLDcuMjgtMy40LDcuMjgtNy42YzAtNC4yLTMuMjYtNy42MS03LjI4LTcuNjFzLTcuMjgsMy40LTcuMjgsNy42MQoJCQkJQzEzNC44NSw5OC4yMSwxMzguMTIsMTAxLjYxLDE0Mi4xNCwxMDEuNjF6Ii8+CgkJCTxwYXRoIGNsYXNzPSJzdDIiIGQ9Ik0xNzIuNDEsOTYuODhjMCwxMy42Mi04LjI1LDI1LjIzLTE5LjgzLDI5LjY3bDYuNTgsMTEuODRsLTkuNzMsMTNsOS43MywxMi43MWwtMTcuMDMsMjMuMDV2LTI1Ljl2LTMyLjc3CgkJCQl2LTI2Ljg3YzQuMDIsMCw3LjI4LTMuNDEsNy4yOC03LjZjMC00LjItMy4yNi03LjYxLTcuMjgtNy42MVY2NS4yOEMxNTguODYsNjUuMjgsMTcyLjQxLDc5LjQzLDE3Mi40MSw5Ni44OHoiLz4KCQkJPHBhdGggY2xhc3M9InN0MyIgZD0iTTEyMC4yNCwxMzEuNDNjLTkuNzUtOC0xNi4zLTIwLjMtMTcuMi0zNC4yN0g1MC44Yy0xMC45NiwwLTE5Ljg0LDkuMDEtMTkuODQsMjAuMTN2MjUuMTcKCQkJCWMwLDUuNTYsNC40NCwxMC4wNyw5LjkyLDEwLjA3aDY5LjQ0YzUuNDgsMCw5LjkyLTQuNTEsOS45Mi0xMC4wN1YxMzEuNDN6Ii8+CgkJCTxwYXRoIGNsYXNzPSJzdDQiIGQ9Ik03My4xNiw5MS4xM2MtMi40Mi0wLjQ2LTQuODItMC44OS03LjExLTEuODZDNTcuNCw4NS42NCw1Mi4zNiw3OC45NSw1MC43Myw2OS41CgkJCQljLTEuMTItNi40Ny0wLjU5LTEyLjg3LDIuMDMtMTguOTJjMy43Mi04LjYsMTAuMzktMTMuMjYsMTkuMTUtMTQuODRjNS4yNC0wLjk0LDEwLjQ2LTAuNzMsMTUuNSwxLjE1CgkJCQljNy41OSwyLjgyLDEyLjY4LDguMjYsMTUuMDMsMTYuMjRjMi4zOCw4LjA1LDIuMDMsMTYuMS0xLjU2LDIzLjcyYy0zLjcyLDcuOTYtMTAuMjEsMTIuMjMtMTguNDIsMTMuOQoJCQkJYy0wLjY4LDAuMTQtMS4zNywwLjI3LTIuMDUsMC40MUM3OCw5MS4xMyw3NS41OCw5MS4xMyw3My4xNiw5MS4xM3oiLz4KCQk8L2c+Cgk8L2c+CjwvZz4KPC9zdmc+Cg==");
+}
+
+/* Mark the first social source as the placement reference, then position the
+   passkey link immediately before it. The extra start padding shifts the three
+   native source buttons by half one item so the four-icon group stays centred. */
+@supports (anchor-name: --cavanagh-first-login-source) and
+  (position-area: center inline-start) {
+  fieldset[name="login-sources"] {
+    padding-inline-start: calc(
+      var(--ak-c-login-sources-padding-inline) + 3.25rem
+    ) !important;
+  }
+
+  fieldset[name="login-sources"] > .source-button:first-of-type {
+    anchor-name: --cavanagh-first-login-source;
+  }
+
+  a.pf-c-button[data-ouia-component-id="passwordless"] {
+    position: absolute;
+    position-anchor: --cavanagh-first-login-source;
+    position-area: center inline-start;
+    margin: 0;
+    margin-inline-end: var(--pf-global--spacer--sm);
+    z-index: 2;
+  }
+}
+
+/* Focus treatment */
+:focus-visible {
+  outline: 3px solid var(--cavanagh-gold);
+  outline-offset: 2px;
+}
+
+/* Cards/panels: restrained heraldic edge */
+.pf-c-card,
+.pf-v5-c-card {
+  border: 1px solid color-mix(in srgb, var(--cavanagh-gold) 45%, transparent);
+  border-radius: .75rem;
+}
+
+html[data-theme="dark"] .pf-c-card,
+html[data-theme="dark"] .pf-v5-c-card {
+  background: rgba(21,21,21,.94);
+  box-shadow: 0 .75rem 2rem rgba(0,0,0,.34);
+}
+
+html[data-theme="light"] .pf-c-card,
+html[data-theme="light"] .pf-v5-c-card {
+  background: rgba(251,247,239,.96);
+  box-shadow: 0 .75rem 2rem rgba(74,12,16,.10);
+}
+
+/* Inputs */
+.pf-c-form-control:focus,
+.pf-v5-c-form-control:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--cavanagh-gold);
+  box-shadow: 0 0 0 .18rem rgba(198,154,69,.22);
+}
+
+/* Optional: fixed-language deployments can uncomment this.
+ak-flow-executor::part(locale-select) { display: none; }
+*/
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
