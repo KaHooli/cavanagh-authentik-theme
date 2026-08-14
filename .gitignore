@@ -1,0 +1,6 @@
+*.DS_Store
+Thumbs.db
+svg-preview/
+upload/
+theme-source/
+theme-work/
