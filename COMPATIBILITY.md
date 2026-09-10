@@ -42,11 +42,11 @@ The existing FIDO mark replacement and CSS anchor-positioning enhancement theref
 
 ### PatternFly and Authentik CSS architecture
 
-Authentik 2026.8 introduced substantial CSS organization work, including cascade-layer changes. Current upstream documentation describes PatternFly 4 as a compatibility layer and recommends Authentik's semantic `--ak-*` design tokens and exposed `::part()` surfaces as the long-term public theming API.
+Authentik 2026.8 contains substantial frontend/CSS organization changes, including cascade-layer work. The **2026.8.2 stable documentation still documents the existing `--ak-global--*`, PatternFly 4, and PatternFly 5 compatibility variables**, so the Cavanagh theme deliberately keeps its current palette and compatibility fallbacks for this release.
 
-The Cavanagh theme already prefers `::part()` for the flow structure, but still contains several PatternFly selectors and component-local `--ak-c-*` variables for deliberate compatibility fixes. These remain functional in the reviewed versions, but should be treated as fallbacks rather than permanent API.
+Upstream development after 2026.8 is moving toward shorter semantic variables such as `--ak-color-primary`, `--ak-color-accent`, and `--ak-color-link`, with PatternFly variables increasingly treated as compatibility implementation details. The current upstream guidance also recommends exposed `::part()` surfaces for structural customization.
 
-A future cleanup can progressively migrate palette-level overrides to the newer semantic variables as they become part of the stable release line, while keeping the existing PatternFly fallbacks for older installations.
+The Cavanagh theme already prefers `::part()` for the flow structure. Its remaining PatternFly selectors and component-local `--ak-c-*` variables are retained only where they are still needed for button/card/input styling and targeted layout fixes. A later release can migrate palette-level overrides to the newer semantic variables once those APIs are part of the stable Authentik release line, while keeping appropriate fallbacks for older installations.
 
 ## Upgrade test checklist
 
