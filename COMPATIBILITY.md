@@ -38,7 +38,7 @@ The `--ak-c-login__*` variables used by that correction are component-local impl
 
 The passwordless action still renders as a PatternFly button with `data-ouia-component-id="passwordless"`, and the Identification stage still uses the `login-sources` fieldset and `source-button` classes used by the Cavanagh FIDO/passkey positioning rules.
 
-The existing FIDO mark replacement and CSS anchor-positioning enhancement therefore remain compatible with the reviewed frontend.
+The existing FIDO mark replacement and CSS anchor-positioning enhancement therefore remain compatible with the reviewed frontend. During this review, the embedded dark/reverse FIDO SVG data URI was also normalized to match the bundled `FIDO_Passkey_mark_A_reverse.svg`; the previous embedded value contained an extra closing `</svg>` tag.
 
 ### PatternFly and Authentik CSS architecture
 
