@@ -4,6 +4,8 @@ A light/dark theme package for a self-hosted authentik instance using the Cavana
 
 Package revision: **3.9 — inline FIDO and social-source marks (14 August 2026)**
 
+Compatibility hotfix: **Authentik 2026.8.2 (11 September 2026)** — hides the newly generated **Powered by authentik** flow-footer item while preserving configured Brand footer links. See [`COMPATIBILITY.md`](COMPATIBILITY.md) for the frontend review.
+
 ## Preferred authentik assets
 
 - `branding/cavanagh-logo-light.svg`
@@ -144,7 +146,7 @@ Usage Agreement and current FIDO Logo Usage Guidelines.
 
 ## Upgrade note
 
-Custom CSS is an advanced authentik feature. The theme primarily relies on CSS variables, but a small number of PatternFly selectors are included for buttons/cards/inputs. Review the login flow and user library after major authentik upgrades.
+Custom CSS is an advanced authentik feature. The theme primarily relies on CSS variables and exposed parts, but a small number of PatternFly selectors and component-local variables are included for buttons/cards/inputs and targeted layout fixes. The CSS was rechecked against Authentik 2026.8.2 and current upstream frontend code on 11 September 2026; see [`COMPATIBILITY.md`](COMPATIBILITY.md) for the findings. Continue reviewing the login flow and user library after major authentik upgrades.
 
 ## Suggested flow presentation
 
